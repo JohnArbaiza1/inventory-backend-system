@@ -1,5 +1,6 @@
 //Importamos express
-import express from 'express'
+import express from 'express';
+import pool from './config/db.js';
 
 // Creamos uns instancia de la app de express
 const app = express();
@@ -8,9 +9,20 @@ const app = express();
 app.use(express.json());
 
 // Definimos una ruta GET para verificar el estado del sistema
-app.get('/health', (req, res) =>{
-    res.json( {status: 'ok'});
+app.get('/health', async (req, res) =>{
+    try {
+        await pool.query('SELECT 1');
+        res.json({
+            status: 'ok',
+            database: 'connected'
+        });
+    } catch (error) {
+        res.status(503).json({
+            status: 'error',
+            database: 'disconnected'
+        })
+    }
 });
 
 // Exporta la aplicación para poder usarla en server.jS
-module.exports = app;
+export default app;

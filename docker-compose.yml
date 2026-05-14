@@ -1,0 +1,31 @@
+# Definimos los servicios que se van a utilizar
+services:
+  db:
+    image: postgres:17
+    container_name: inventory_db
+    restart: unless-stopped
+
+    # Variables de entorno para nuestro servicio
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    
+    ports:
+      - "${DB_PORT}:5432"
+
+    # Definimos un volumen para la persistencia de datos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # Configuramos el healtehck para verificar el estado del contenedor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Declaración global de volúmenes
+volumes:
+  # guarda los datos de postgres para que no se pierdan al reiniciar el contenedor
+  postgres_data:
