@@ -25,6 +25,23 @@ services:
       timeout: 5s
       retries: 5
 
+  # Servicio de flyway para el versionado de la db
+  flyway:
+    image: flyway/flyway:12-alpine
+    container_name: inventory_flyway
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      FLYWAY_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      FLYWAY_USER: ${DB_USER}
+      FLYWAY_PASSWORD: ${DB_PASSWORD}
+      FLYWAY_CONNECT_RETRIES: 10
+      
+    volumes:
+      - ./db/migrations:/flyway/sql
+    # command: migrate
+
 # Declaración global de volúmenes
 volumes:
   # guarda los datos de postgres para que no se pierdan al reiniciar el contenedor
