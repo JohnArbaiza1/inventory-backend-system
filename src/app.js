@@ -2,6 +2,7 @@
 import express from 'express';
 import pool from './config/db.js';
 import categoryRoutes from './routes/category.routes.js';
+import errrorHandler from './middlewares/error.middleware.js';
 
 // Creamos uns instancia de la app de express
 const app = express();
@@ -27,6 +28,8 @@ app.get('/health', async (req, res) =>{
         })
     }
 });
+
+app.use(errrorHandler);
 
 // Exporta la aplicación para poder usarla en server.jS
 export default app;
