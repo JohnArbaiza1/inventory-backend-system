@@ -2,6 +2,7 @@
 import express from 'express';
 import pool from './config/db.js';
 import categoryRoutes from './routes/category.routes.js';
+import proveedoresRoutes from './routes/proveedores.routes.js'
 import errrorHandler from './middlewares/error.middleware.js';
 
 // Creamos uns instancia de la app de express
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/categories', categoryRoutes);
+app.use('/api/proveedores', proveedoresRoutes);
 
 // Definimos una ruta GET para verificar el estado del sistema
 app.get('/health', async (req, res) =>{
