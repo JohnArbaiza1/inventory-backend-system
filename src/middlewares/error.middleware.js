@@ -1,5 +1,5 @@
 // Middleware de manejo global de errores para Express
-const errrorHandler = (err, req, res, next) =>{
+const errorHandler = (err, req, res, next) =>{
     console.error(err.stack);
 
     // Obtenemos el codigo de estado del error si existiera de lo contrario usa 500
@@ -19,4 +19,4 @@ const errrorHandler = (err, req, res, next) =>{
 };
 
 // Exportamos el middleware
-export default errrorHandler;
+export default errorHandler;
