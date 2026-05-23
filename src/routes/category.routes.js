@@ -13,10 +13,10 @@ const router = Router();
 // RUTAS DE CATEGORÍAS
 // ==========================
 router.get('/', CategoryController.getAllCategories);
-router.get('/:id_categoria', CategoryController.getCategoriesById);
-router.post('/',createCategoryValidator, validateData, CategoryController.create);
-router.put('/:id_categoria', updateCategoryValidator, validateData, CategoryController.update);
-router.delete('/:id_categoria', CategoryController.remove);
+router.get('/:category_id', CategoryController.getCategoryById);
+router.post('/', createCategoryValidator, validateData, CategoryController.create);
+router.put('/:category_id', updateCategoryValidator, validateData, CategoryController.update);
+router.delete('/:category_id', CategoryController.remove);
 
 // Exporta las rutas para utilizarlas en la aplicación principal.
 export default router;

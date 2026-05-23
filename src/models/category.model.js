@@ -1,64 +1,53 @@
 // importamos la conexion a la db
 import pool from '../config/db.js';
 
-// Definimos un objeto que contenga los mentodos relacionado con la tabla categorias
+// Definimos un objeto que contenga los métodos relacionados con la tabla categories
 const CategoryModel = {
 
-    //Obtendra las categorias y las ordenara por fecha de creación
-    async findAll(){
-
-        //Ejecuta la consulta sql
+    // Obtiene las categories y las ordena por fecha de creación
+    async findAll() {
         const result = await pool.query(
-            'SELECT * FROM categories ORDER BY fecha_creacion DESC'
+            'SELECT * FROM categories ORDER BY created_at DESC'
         );
-
-        //Retornamos las filas obtenidas
         return result.rows;
     },
 
-    //Busca las categorias por su id
-    async findById(id_categoria){
+    // Busca las categories por su id
+    async findById(category_id) {
         const result = await pool.query(
-            'SELECT * FROM categories WHERE id_categoria = $1',
-            [id_categoria]
+            'SELECT * FROM categories WHERE category_id = $1',
+            [category_id]
         );
-
         return result.rows[0] || null;
     },
 
-    // Para crear nuevas categorias
-    async createCategories(nombre_categoria, descripcion){
+    // Para crear nuevas categories
+    async createCategory(category_name, description) {
         const result = await pool.query(
-            'INSERT INTO categories(nombre_categoria, descripcion) VALUES ($1, $2) RETURNING *',
-            [nombre_categoria, descripcion]
+            'INSERT INTO categories(category_name, description) VALUES ($1, $2) RETURNING *',
+            [category_name, description]
         );
-
         return result.rows[0];
     },
 
-    //Para actualizar categorias existentes usando el id
-    async updateCategories(id_categoria, nombre_categoria, descripcion){
+    // Para actualizar categories existentes usando el id
+    async updateCategory(category_id, category_name, description) {
         const result = await pool.query(
-            'UPDATE categories SET nombre_categoria = $1, descripcion = $2 WHERE id_categoria = $3 RETURNING * ',
-            [nombre_categoria, descripcion, id_categoria]
+            'UPDATE categories SET category_name = $1, description = $2 WHERE category_id = $3 RETURNING *',
+            [category_name, description, category_id]
         );
-
         return result.rows[0] || null;
     },
 
-    // Elimina una categoría por ID.
-    async remove(id_categoria) {
-
-        // Elimina el registro y devuelve el registro eliminado.
+    // Elimina una category por ID
+    async remove(category_id) {
         const result = await pool.query(
-        'DELETE FROM categories WHERE id_categoria = $1 RETURNING *',
-        [id_categoria]
+            'DELETE FROM categories WHERE category_id = $1 RETURNING *',
+            [category_id]
         );
-
         return result.rows[0] || null;
     }
 };
 
-// Exportamos el modelo para usarlo
 export default CategoryModel;
 
