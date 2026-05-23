@@ -1,4 +1,4 @@
-import ProductsModel from "../models/product.model.js";
+import ProductsModel from "../models/products.model.js";
 
 const ProductsController = {
 
@@ -14,7 +14,7 @@ const ProductsController = {
 
     async getProductById(req, res) {
         try {
-            const product = await ProductsModel.findProductById(req.params.id_product);
+            const product = await ProductsModel.findProductById(req.params.product_id);
 
             if (!product) {
                 return res.status(404).json({ error: "Product not found" });
@@ -30,21 +30,21 @@ const ProductsController = {
     async createProduct(req, res) {
         try {
             const {
-                nombre_producto,
-                descripcion,
-                precio,
+                product_name,
+                description,
+                price,
                 stock,
-                id_categoria,
-                id_proveedor
+                category_id,
+                supplier_id
             } = req.body;
 
             const product = await ProductsModel.createProduct(
-                nombre_producto,
-                descripcion,
-                precio,
+                product_name,
+                description,
+                price,
                 stock,
-                id_categoria,
-                id_proveedor
+                category_id,
+                supplier_id
             );
 
             res.status(201).json(product);
@@ -56,24 +56,24 @@ const ProductsController = {
 
     async updateProduct(req, res) {
         try {
-            const { id_product } = req.params;
+            const { product_id } = req.params;
             const {
-                nombre_producto,
-                descripcion,
-                precio,
+                product_name,
+                description,
+                price,
                 stock,
-                id_categoria,
-                id_proveedor
+                category_id,
+                supplier_id
             } = req.body;
 
             const product = await ProductsModel.updateProduct(
-                id_product,
-                nombre_producto,
-                descripcion,
-                precio,
+                product_id,
+                product_name,
+                description,
+                price,
                 stock,
-                id_categoria,
-                id_proveedor
+                category_id,
+                supplier_id
             );
 
             if (!product) {
@@ -89,7 +89,7 @@ const ProductsController = {
 
     async deleteProduct(req, res) {
         try {
-            const product = await ProductsModel.deleteProduct(req.params.id_product);
+            const product = await ProductsModel.deleteProduct(req.params.product_id);
 
             if (!product) {
                 return res.status(404).json({ error: "Product not found" });

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductsController from "../controllers/products.controller.js";
-import { createProductValidator, updateProductValidator} from '../middlewares/products.validator.js'
+import { createProductValidator, updateProductValidator } from '../middlewares/products.validator.js';
 import validateData from "../middlewares/validate.middleware.js";
 
 const router = Router();
@@ -10,8 +10,7 @@ const router = Router();
 // ======================
 
 router.get('/', ProductsController.getAllProducts);
-
-router.get('/:id_product', ProductsController.getProductById);
+router.get('/:product_id', ProductsController.getProductById);
 
 router.post(
     '/',
@@ -21,12 +20,12 @@ router.post(
 );
 
 router.put(
-    '/:id_product',
+    '/:product_id',
     updateProductValidator,
     validateData,
     ProductsController.updateProduct
 );
 
-router.delete('/:id_product', ProductsController.deleteProduct);
+router.delete('/:product_id', ProductsController.deleteProduct);
 
 export default router;
