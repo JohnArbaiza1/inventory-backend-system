@@ -1,15 +1,15 @@
-CREATE TABLE products(
-    id_product SERIAL PRIMARY KEY,
-    nombre_producto VARCHAR(250) NOT NULL,
-    descripcion TEXT,
-    precio NUMERIC(10, 2) NOT NULL,
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(250) NOT NULL,
+    description TEXT,
+    price NUMERIC(10, 2) NOT NULL,
     stock INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    id_categoria int,
-    id_proveedor int,
-    FOREIGN KEY (id_categoria) REFERENCES categories(id_categoria) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT chk_stock_productos CHECK (stock >= 0),
-    CONSTRAINT chk_precio_productos CHECK (precio > 0.0)
+    category_id INT,
+    supplier_id INT,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT chk_stock_products CHECK (stock >= 0),
+    CONSTRAINT chk_price_products CHECK (price > 0.0)
 );
