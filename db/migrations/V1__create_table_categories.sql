@@ -1,6 +1,6 @@
-CREATE TABLE categories(
-    id_categoria SERIAL PRIMARY KEY,
-    nombre_categoria VARCHAR(100) NOT NULL UNIQUE,
-    descripcion TEXT,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
