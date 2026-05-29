@@ -1,0 +1,582 @@
+openapi: 3.0.0
+
+info:
+  title: Mini Proyecto API de Inventario
+  version: 1.0.0
+  description: Documentación de la API para manejar categorías de productos
+
+servers:
+  - url: http://localhost:9000
+    description: Development server
+
+# referencias a los archivos de paths
+paths:
+
+  # ═══════════════════════════════
+  # CATEGORIES
+  # ═══════════════════════════════
+  /api/categories:
+    get:
+      tags: [Categories]
+      summary: Obtener todas las categorías
+      responses:
+        '200':
+          description: Lista de categorías
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags: [Categories]
+      summary: Crear una categoría
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        '201':
+          description: Categoría creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '400':
+          description: Datos inválidos o categoría duplicada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /api/categories/{category_id}:
+    get:
+      tags: [Categories]
+      summary: Obtener categoría por ID
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Categoría encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags: [Categories]
+      summary: Actualizar categoría por ID
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        '200':
+          description: Categoría actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Nombre duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+    delete:
+      tags: [Categories]
+      summary: Eliminar categoría por ID
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: Categoría eliminada
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ═══════════════════════════════
+  # SUPPLIERS
+  # ═══════════════════════════════
+  /api/suppliers:
+    get:
+      tags: [Suppliers]
+      summary: Obtener todos los proveedores
+      parameters:
+        - name: is_active
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filtrar por estado activo/inactivo
+          example: true
+      responses:
+        '200':
+          description: Lista de proveedores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Supplier'
+        '500':
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags: [Suppliers]
+      summary: Crear un proveedor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierInput'
+      responses:
+        '201':
+          description: Proveedor creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+        '400':
+          description: Email duplicado o datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /api/suppliers/{supplier_id}:
+    get:
+      tags: [Suppliers]
+      summary: Obtener proveedor por ID
+      parameters:
+        - name: supplier_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Proveedor encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+        '404':
+          description: Proveedor no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags: [Suppliers]
+      summary: Actualizar proveedor por ID
+      parameters:
+        - name: supplier_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierInput'
+      responses:
+        '200':
+          description: Proveedor actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+        '404':
+          description: Proveedor no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Email duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+    delete:
+      tags: [Suppliers]
+      summary: Eliminar proveedor por ID
+      parameters:
+        - name: supplier_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: Proveedor eliminado
+        '404':
+          description: Proveedor no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ═══════════════════════════════
+  # PRODUCTS
+  # ═══════════════════════════════
+  /api/products:
+    get:
+      tags: [Products]
+      summary: Obtener todos los productos
+      parameters:
+        - name: category_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filtrar por categoría
+          example: 1
+        - name: supplier_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filtrar por proveedor
+          example: 1
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags: [Products]
+      summary: Crear un producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Datos inválidos (precio <= 0, stock < 0)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '404':
+          description: category_id o supplier_id no existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/products/{product_id}:
+    get:
+      tags: [Products]
+      summary: Obtener producto por ID
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags: [Products]
+      summary: Actualizar producto por ID
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+    delete:
+      tags: [Products]
+      summary: Eliminar producto por ID
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: Producto eliminado
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+# ═══════════════════════════════
+# SCHEMAS
+# ═══════════════════════════════
+components:
+  schemas:
+
+    Category:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          example: 1
+        category_name:
+          type: string
+          example: Electrónica
+        description:
+          type: string
+          example: Productos electrónicos y gadgets
+        created_at:
+          type: string
+          format: date-time
+          example: 2024-01-15T10:30:00Z
+
+    CategoryInput:
+      type: object
+      required: [category_name]
+      properties:
+        category_name:
+          type: string
+          example: Electrónica
+        description:
+          type: string
+          example: Productos electrónicos y gadgets
+
+    Supplier:
+      type: object
+      properties:
+        supplier_id:
+          type: integer
+          example: 1
+        supplier_name:
+          type: string
+          example: Distribuidora Tech S.A.
+        phone:
+          type: string
+          example: "789456123"
+        email:
+          type: string
+          example: contacto@tech.com
+        is_active:
+          type: boolean
+          example: true
+
+    SupplierInput:
+      type: object
+      required: [supplier_name, phone, email]
+      properties:
+        supplier_name:
+          type: string
+          example: Distribuidora Tech S.A.
+        phone:
+          type: string
+          minLength: 9
+          maxLength: 9
+          example: "789456123"
+        email:
+          type: string
+          format: email
+          example: contacto@tech.com
+        is_active:
+          type: boolean
+          example: true
+
+    Product:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          example: 1
+        product_name:
+          type: string
+          example: Laptop HP 15"
+        description:
+          type: string
+          example: Laptop con procesador Intel i5
+        price:
+          type: number
+          format: float
+          example: 599.99
+        stock:
+          type: integer
+          example: 50
+        created_at:
+          type: string
+          format: date-time
+          example: 2024-01-15T10:30:00Z
+        updated_at:
+          type: string
+          format: date-time
+          example: 2024-01-15T10:30:00Z
+        category_id:
+          type: integer
+          example: 1
+        supplier_id:
+          type: integer
+          example: 1
+
+    ProductInput:
+      type: object
+      required: [product_name, price, stock]
+      properties:
+        product_name:
+          type: string
+          example: Laptop HP 15"
+        description:
+          type: string
+          example: Laptop con procesador Intel i5
+        price:
+          type: number
+          format: float
+          minimum: 0.01
+          example: 599.99
+        stock:
+          type: integer
+          minimum: 0
+          example: 50
+        category_id:
+          type: integer
+          example: 1
+        supplier_id:
+          type: integer
+          example: 1
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Recurso no encontrado
+
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Datos inválidos
+        errors:
+          type: array
+          items:
+            type: string
+          example: ["price debe ser mayor a 0", "stock no puede ser negativo"]
+
+    SuccessMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Resource deleted successfully 

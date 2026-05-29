@@ -6,8 +6,23 @@ import supplierRoutes from './routes/supplier.routes.js'
 import productsRoutes from "./routes/products.routes.js";
 import errorHandler from './middlewares/error.middleware.js';
 
+// Imports para Swagger
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Instancias para el uso de Swagger
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const swaggerDocument = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
+
 // Creamos uns instancia de la app de express
 const app = express();
+
+//Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middleware que permite recibir JSON en el body de las peticiones
 app.use(express.json());

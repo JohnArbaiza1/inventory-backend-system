@@ -1,0 +1,134 @@
+categories:
+  get:
+    tags:
+      - Categories
+    summary: Get all categories
+    responses:
+      '200':
+        description: Lista de categorías
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../swagger.yaml#/components/schemas/Category'
+      '500':
+        description: Error interno del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+
+  post:
+    tags:
+      - Categories
+    summary: Crear una categoría
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../swagger.yaml#/components/schemas/CategoryInput'
+    responses:
+      '201':
+        description: Categoría creada exitosamente
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Category'
+      '400':
+        description: Datos inválidos o categoría duplicada
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/ValidationError'
+      '500':
+        description: Error interno del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+
+categoriesById:
+  get:
+    tags:
+      - Categories
+    summary: Obtener categoría por ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+    responses:
+      '200':
+        description: Categoría encontrada
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Category'
+      '404':
+        description: Categoría no encontrada
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+
+  put:
+    tags:
+      - Categories
+    summary: Actualizar categoría por ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../swagger.yaml#/components/schemas/CategoryInput'
+    responses:
+      '200':
+        description: Categoría actualizada
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Category'
+      '404':
+        description: Categoría no encontrada
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+      '400':
+        description: Nombre de categoría duplicado
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/ValidationError'
+
+  delete:
+    tags:
+      - Categories
+    summary: Eliminar categoría por ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+    responses:
+      '204':
+        description: Categoría eliminada exitosamente
+      '404':
+        description: Categoría no encontrada
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
