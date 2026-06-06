@@ -1,0 +1,142 @@
+suppliers:
+  get:
+    tags:
+      - Suppliers
+    summary: Obtener todos los proveedores
+    parameters:
+      - name: is_active
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Filtrar por estado activo/inactivo
+        example: true
+    responses:
+      '200':
+        description: Lista de proveedores
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../swagger.yaml#/components/schemas/Supplier'
+      '500':
+        description: Error interno del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+
+  post:
+    tags:
+      - Suppliers
+    summary: Crear un proveedor
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../swagger.yaml#/components/schemas/SupplierInput'
+    responses:
+      '201':
+        description: Proveedor creado exitosamente
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Supplier'
+      '400':
+        description: Email duplicado o datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/ValidationError'
+      '500':
+        description: Error interno del servidor
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+
+suppliersById:
+  get:
+    tags:
+      - Suppliers
+    summary: Obtener proveedor por ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+    responses:
+      '200':
+        description: Proveedor encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Supplier'
+      '404':
+        description: Proveedor no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+
+  put:
+    tags:
+      - Suppliers
+    summary: Actualizar proveedor por ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../swagger.yaml#/components/schemas/SupplierInput'
+    responses:
+      '200':
+        description: Proveedor actualizado
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Supplier'
+      '404':
+        description: Proveedor no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
+      '400':
+        description: Email duplicado o datos inválidos
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/ValidationError'
+
+  delete:
+    tags:
+      - Suppliers
+    summary: Eliminar proveedor por ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1
+    responses:
+      '204':
+        description: Proveedor eliminado exitosamente
+      '404':
+        description: Proveedor no encontrado
+        content:
+          application/json:
+            schema:
+              $ref: '../swagger.yaml#/components/schemas/Error'
