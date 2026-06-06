@@ -1,56 +1,81 @@
-# Nombre del workflow
+# Nombre del pipeline en GitHub Actions
 name: CI Pipeline
 
-# Se ejecuta en push y pull request a main
+# Cuándo se ejecuta el workflow
 on:
+  # Cada push a main
   push:
     branches: ["main"]
+
+  # Cada pull request hacia main
   pull_request:
     branches: ["main"]
+
+  # Permite ejecutarlo manualmente desde GitHub
   workflow_dispatch:
+
+# Variables globales disponibles en todos los jobs
+env:
+  DB_NAME: inventory_db
+  DB_USER: admin
+  DB_PASSWORD: secret123
+  DB_PORT: 5432
+  PORT: 3000
+  NODE_ENV: test
 
 jobs:
   test:
+    # Nombre del job
     name: Run API Tests
+
+    # Máquina virtual donde corre todo
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Descargar código
+      # 1. Descargar el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Instalar Docker Compose (ya viene en ubuntu-latest pero esto asegura compatibilidad)
+      # 2. Verificar que Docker está disponible
       - name: Check Docker
         run: docker --version && docker compose version
 
-      # 3. Levantar base de datos con tu docker-compose
+      # 3. Levantar SOLO la base de datos (PostgreSQL) con Docker Compose
       - name: Start database
         run: docker compose up -d db
 
-      # 4. Esperar a que PostgreSQL esté listo
+      # 4. Esperar hasta que PostgreSQL esté completamente listo
       - name: Wait for PostgreSQL
-        run: sleep 10
+        run: |
+          echo "Waiting for PostgreSQL..."
+          until docker compose exec -T db pg_isready -U admin -d inventory_db; do
+            sleep 2
+          done
+          echo "PostgreSQL is ready!"
 
-      # 5. Ejecutar migraciones con Flyway desde tu compose
+      # 5. Ejecutar migraciones con Flyway usando Docker Compose
       - name: Run Flyway migrations
         run: docker compose run --rm flyway migrate
 
-      # 6. Instalar Node.js
+      # 6. Instalar Node.js en el runner
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
-      # 7. Instalar dependencias
+      # 7. Instalar dependencias del proyecto
       - name: Install dependencies
         run: npm ci
 
-      # 8. Ejecutar tests
+      # 8. Ejecutar tests de la API
       - name: Run tests
+        env:
+          # Conexión a la base de datos desde Node
+          DB_HOST: localhost
         run: npm test
 
-      # 9. Apagar contenedores (importante para limpiar CI)
+      # 9. Apagar y limpiar contenedores (IMPORTANTE para no dejar basura)
       - name: Shutdown containers
         if: always()
         run: docker compose down -v
