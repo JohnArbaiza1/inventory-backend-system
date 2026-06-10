@@ -44,6 +44,16 @@ Su estructura permite escalar fácilmente e integrar un frontend o servicios ext
 
 ---
 
+## 🔒 Seguridad
+
+- **Helmet** — agrega headers de seguridad HTTP en todas las respuestas.  
+  En entorno de desarrollo se usa HTTP, pero en producción la API debe ejecutarse sobre HTTPS para asegurar la transmisión de datos.
+- **Rate Limiting** — límite de 100 requests por IP cada 15 minutos en todas las rutas `/api`.  
+  Configuración orientada a desarrollo; en producción los valores deben calibrarse según patrones de tráfico reales, carga esperada y capacidades de infraestructura.
+- **GitHub Secrets** — las credenciales del entorno de CI están encriptadas y nunca expuestas en el código.
+
+---
+
 ## 🚀 Getting Started
 
 ### Requisitos previos
