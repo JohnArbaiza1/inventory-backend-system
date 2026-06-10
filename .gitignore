@@ -1,15 +1,39 @@
-# IDEs / editors
+# =========================
+# IDEs / Editors
+# =========================
 .vscode/
+.idea/
 
-# Dependencies
+# =========================
+# IDEs / Editors
+# =========================
 node_modules/
 
 # Environment variables
 .env
+.env.*
+!.env.example
 
+# =========================
 # Logs
+# =========================
 logs/
 *.log
+npm-debug.log*
 
+# =========================
 # Cache
+# =========================
 .cache/
+.npm/
+
+# =========================
+# Build / Distribution
+# =========================
+dist/
+build/
+
+# =========================
+# Test Coverage
+# =========================
+coverage/

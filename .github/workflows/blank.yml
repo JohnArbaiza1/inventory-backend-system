@@ -16,11 +16,11 @@ on:
 
 # Variables globales disponibles en todos los jobs
 env:
-  DB_NAME: inventory_db
-  DB_USER: admin
-  DB_PASSWORD: secret123
-  DB_PORT: 5432
-  PORT: 3000
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{secrets.DB_PASSWORD }}
+  DB_PORT: ${{secrets.DB_PORT }}
+  PORT: ${{ secrets.PORT }}
   NODE_ENV: test
 
 jobs:
